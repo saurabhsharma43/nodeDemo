@@ -2,12 +2,11 @@ const mongoose = require('mongoose');
 //const passport = require('passport');
 const passport = require('./../../config/passport');
 const router = require('express').Router();
-const auth = require('../auth');
+// const auth = require('../auth');
 const Users = mongoose.model('Users');
-const passportAuth = require('../');
 
 //POST new user route (optional, everyone has access)
-router.post('/', auth.optional, (req, res, next) => {
+router.post('/', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const { body: { user } } = req;
 
     if (!user.email) {
@@ -35,7 +34,7 @@ router.post('/', auth.optional, (req, res, next) => {
 });
 
 //POST login route (optional, everyone has access)
-router.post('/login', auth.optional, (req, res, next) => {
+router.post('/login', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const { body: { user } } = req;
 
     if (!user.email) {
