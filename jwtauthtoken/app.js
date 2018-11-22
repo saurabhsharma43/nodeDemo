@@ -5,6 +5,8 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
+// const passportMiddleware = require('./config/passport');
+// const testMiddleWare = require('./middleware/test');
 
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
@@ -31,9 +33,11 @@ if (!isProduction) {
 mongoose.connect('mongodb://localhost/passport-tutorial');
 mongoose.set('debug', true);
 
+// app.use(passportMiddleware);
 //Models & routes
 require('./models/Users');
 require('./config/passport');
+
 app.use(require('./routes'));
 
 
@@ -51,16 +55,16 @@ if (!isProduction) {
     });
 }
 
-app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+// app.use((err, req, res, next) => {
+//     res.status(err.status || 500);
 
-    res.json({
-        errors: {
-            message: err.message,
-            error: {},
-        },
-    });
-});
+//     res.json({
+//         errors: {
+//             message: err.message,
+//             error: {},
+//         },
+//     });
+// });
 app.use(function(req, res, next) {
     return res.status(404).send({ message: 'Route' + req.url + ' Not found.' });
 });
